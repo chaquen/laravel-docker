@@ -144,7 +144,7 @@ Luego de ello ejecute el comando, que le permitira ejecutar las migraciones
     docker-compose exec php php /var/www/html/artisan migrate
 
 
-Ahora puedes acceder a tu **[servidor local](localhost:8088)** si agregar una ruta a laravel podres verla
+Ahora puede acceder a su [servidor local](localhost:8088) 
 
 ### Nota 
 Si te aparece el error de permisos linux debes agregar los permiso
