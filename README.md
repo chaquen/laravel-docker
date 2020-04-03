@@ -89,7 +89,7 @@ Cree los archivos ***docker-compose.yml***, y ***Dockerfile***, ***default.conf*
     }
 ## Estructura de carpetas
 
-    /mysql
+    /mysql (esta carpeta se ignoro en el repositorio debe crearse)
     /nginx
         -default.conf
     /src
