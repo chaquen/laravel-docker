@@ -152,3 +152,77 @@ Si te aparece el error de permisos linux debes agregar los permiso
     chmod -R 777 storage
     cd storage  
     chmod -R logs
+
+Para acceder a Mysql 
+
+    docker exec -it mysql /bin/sh -c "[ -e /bin/bash ] && /bin/bash || /bin/sh"
+    mysql -h localhost -u root -p
+
+
+##  laravel [Passport](https://laravel.com/docs/7.x/passport)    
+Instalar via composer
+
+    composer require laravel/passport
+
+Generar la migración y la clave para encriptar 
+
+    #php artisan passport:install
+    docker-compose exec php php /var/www/html/artisan migrate
+    docker-compose exec php php /var/www/html/artisan passport:install
+    
+
+Agregar el paquete a la clase **App/User.php**
+
+    use Laravel\Passport\HasApiTokens;
+    
+    class User extends Authenticatable
+    {
+        use HasApiTokens, Notifiable;
+    }
+
+Agregar **Passport::route** al **AuthServiceProvider**
+
+    class AuthServiceProvider extends ServiceProvider
+    {
+        /**
+         * The policy mappings for the application.
+         *
+         * @var array
+         */
+        protected $policies = [
+            'App\Model' => 'App\Policies\ModelPolicy',
+        ];
+
+        /**
+         * Register any authentication / authorization services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            $this->registerPolicies();
+
+            Passport::routes();
+        }
+    }
+
+Finalmente, en el archivo **config/auth.php**, agregamos al **driver** de el **guard** **api** el valor de 
+**passport**
+
+
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
+    ],
+
+
+ Ver las rutas creadas
+        
+        docker-compose exec php php /var/www/html/artisan route:list   
